@@ -71,6 +71,7 @@ class mysqlDBqueries:
 # process with their code:
 # 1) wcoin
 # 2) mmm
+# 3) blum
 # tmp = mysqlDBqueries()
 # tmp.insert_process_data('mmm', False, 999)
 # tmp = mysqlDBqueries()

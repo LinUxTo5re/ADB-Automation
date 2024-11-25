@@ -9,10 +9,14 @@ import random
 import subprocess
 import asyncio
 from mysqlDBqueries import mysqlDBqueries
+from handleEmulator import GenymotionManager
 
 class UpdatedMineWcoinProgramAsync:
-    def __init__(self, device_id):
+    def __init__(self, device_id, emulator_name, genymotion_path):
         self.device_id = device_id
+        self.count_error = 0
+        self.emulator_name = emulator_name
+        self.genymotion_path = genymotion_path
 
     async def take_screenshot(self):
         try:
@@ -26,6 +30,13 @@ class UpdatedMineWcoinProgramAsync:
             return image
         except Exception as e:
             print(f"Error capturing screenshot: {e}")
+            try:
+                dbContext = mysqlDBqueries()
+                dbContext.insert_process_data('Error', False, 999)
+                await asyncio.sleep(300)
+            except Exception as e:
+                print(f"DB exception: {e}")
+
             return None
 
     async def process_screenshot(self, image, current_strike_value=3500):
@@ -50,15 +61,13 @@ class UpdatedMineWcoinProgramAsync:
 
     def determine_sleep_time(self, number_before_slash):
         if number_before_slash < 500:
-            return 620
+            return 650
         elif number_before_slash < 1000:
-            return 500
+            return 550
         elif number_before_slash < 2000:
-            return 270
-        elif number_before_slash < 2500:
-            return 240
+            return 350
         elif number_before_slash < 3000:
-            return 180
+            return 280
         elif number_before_slash < 3500:
             return 90
         else:
@@ -67,7 +76,7 @@ class UpdatedMineWcoinProgramAsync:
     async def tap_center(self):
         total_clicks = 0
         while total_clicks < 600:
-            os.system(f"adb -s {self.device_id} shell input tap 500 1250")
+            os.system(f"adb -s {self.device_id} shell input tap 500 1250") # w-coin tap pointer
             total_clicks += 1
             if total_clicks % 100 == 0:
                 print(f"Total clicks so far: {total_clicks}")
@@ -110,6 +119,12 @@ class UpdatedMineWcoinProgramAsync:
                 image = await self.take_screenshot()
                 if image is None:
                     print("Error capturing screenshot. Retrying...")
+                    self.count_error = self.count_error + 1
+                    if self.count_error > 5:
+                        manager = GenymotionManager(self.emulator_name, self.genymotion_path)
+                        await manager.manage_emulator()
+                        await asyncio.sleep(10)
+                        self.count_error = 0
                     continue
 
                 print('Screenshot taken and stored in array successfully')
