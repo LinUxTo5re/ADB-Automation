@@ -1,35 +1,17 @@
-import asyncio
 import os
+import time
 
 class GenymotionManager:
-    def __init__(self, emulator_name, genymotion_path):
-        self.genymotion_path = genymotion_path
+    def __init__(self, emulator_name):
         self.emulator_name = emulator_name
 
-    async def run_command(self, command, cwd=None):
-        try:
-            process = await asyncio.create_subprocess_exec(
-                *command,
-                cwd=cwd,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-            )
-            stdout, stderr = await process.communicate()
-            if process.returncode == 0:
-                return stdout.decode().strip()
-            else:
-                print(f"Command failed: {stderr.decode().strip()}")
-                return None
-        except Exception as e:
-            print(f"Error while running command: {e}")
-            return None
-
     # Get running emulator details
-    async def get_running_emulator(self):
-        output = await self.run_command(["./gmtool", "admin", "list"], cwd=self.genymotion_path)
+    def get_running_emulator(self):
+        output = os.popen("""./gmtool admin list""").read()
+
         if output:
             lines = output.splitlines()
-            for line in lines[2:]:  # Skip header lines
+            for line in lines[2:]: 
                 cols = line.split("|")
                 if len(cols) >= 4:
                     state = cols[0].strip()
@@ -39,36 +21,40 @@ class GenymotionManager:
         return None
 
     # Stop running emulator
-    async def stop_emulator(self, name):
-        print(f"Stopping emulator: {name}")
-        await self.run_command(["./gmtool", "admin", "stop", name], cwd=self.genymotion_path)
+    def stop_emulator(self, name):
+        print(f"Stopping emulator: {name}\n")
+        os.system(f"""./gmtool admin stop '{name}'""")
 
     # Restart ADB server
-    async def restart_adb_server(self):
+    def restart_adb_server(self):
         print("Restarting ADB server...")
-        await self.run_command(["adb", "kill-server"], cwd="/")
-        await asyncio.sleep(5)
-        await self.run_command(["adb", "start-server"], cwd="/")
+        os.system("""adb kill-server""")
+        os.system("""adb start-server""")
 
     # Start emulator specially designed for telegram mining
-    async def start_emulator(self, name):
+    def start_emulator(self, name):
         print(f"Starting emulator: {name}")
-        await self.run_command(["./gmtool", "admin", "start", name], cwd=self.genymotion_path)
+        os.system(f"""./gmtool admin start '{name}'""")
 
-    async def manage_emulator(self):
-        running_emulator = await self.get_running_emulator()
-        if running_emulator:
-            print(f"Found running emulator: {running_emulator}")
-            await self.stop_emulator(running_emulator)
-            await asyncio.sleep(5)
-        else:
-            print("No running emulator found.")
+    def manage_emulator(self):
+        os.chdir(os.path.expanduser('~/genymotion'))
+        self.stop_emulator(self.emulator_name)
+        while True:
+            print(f"\nHandling genymotion emulator: {self.emulator_name}")
+            sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + 1800))
 
-        await self.restart_adb_server()
-        await self.start_emulator(self.emulator_name)
+            running_emulator = self.get_running_emulator()
+            if not running_emulator == self.emulator_name or not running_emulator:
+                print("No running emulator found.")  
+                self.restart_adb_server()
+                self.start_emulator(self.emulator_name)
+                print(f"Started Emulator: {self.emulator_name}")         
+            elif running_emulator and running_emulator == self.emulator_name:
+                print(f"Found running emulator: {running_emulator}")
 
-home_dir = os.path.expanduser("~")
-genymotion_path = os.path.join(home_dir, "genymotion")
+            print(f"Will be back after 30 minutes (until {sleep_time})")
+            time.sleep(1800)   
 
-manager = GenymotionManager("CloneTMP - Samsung Galaxy S23", genymotion_path)
-asyncio.run(manager.manage_emulator())
+if __name__ == '__main__':
+    genyManager = GenymotionManager("CloneTMP - Samsung Galaxy S23")
+    genyManager.manage_emulator()

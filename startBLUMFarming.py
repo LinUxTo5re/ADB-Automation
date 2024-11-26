@@ -19,6 +19,7 @@ class StartBLUMFarming:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE
             )
+            await asyncio.sleep(1)
             stdout, stderr = await process.communicate()
 
             if process.returncode != 0:
@@ -27,8 +28,6 @@ class StartBLUMFarming:
 
             image_array = np.frombuffer(stdout, dtype=np.uint8)
             image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-            # remove this line
-            # image = cv2.imread("tmp/blumclaim.png", cv2.IMREAD_COLOR)
             return image
         except Exception as e:
             print(f"Error capturing screenshot: {e}")
@@ -36,6 +35,7 @@ class StartBLUMFarming:
 
     async def process_screenshot(self, image, region_coordinates=(45, 1840, 1055, 2005)):
         try:
+            await asyncio.sleep(3)
             x1, y1, x2, y2 = region_coordinates
             cropped_img_np = image[y1:y2, x1:x2]
             cropped_img_rgb = cv2.cvtColor(cropped_img_np, cv2.COLOR_BGR2RGB)
@@ -43,7 +43,6 @@ class StartBLUMFarming:
             print('\n', result)
             extracted_text = [line[1][0] for line in result[0]]
             if extracted_text:
-                print(f'\nText extraction completed: {extracted_text}')
                 return extracted_text
             else:
                 print('No text detected.')
@@ -87,7 +86,7 @@ class StartBLUMFarming:
         
         try:
             dbContext = mysqlDBqueries()
-            dbContext.insert_process_data('mmm', False, 999)
+            dbContext.insert_process_data('mmm', False)
         except Exception as e:
             print(f"DB exception: {e}")
 
@@ -96,10 +95,10 @@ class StartBLUMFarming:
         await self.handle_app_behavior(False)
 
         while True:
-            print("starting BLUM .....")
+            print("\nstarting BLUM .....")
             try:
                 dbContext = mysqlDBqueries()
-                dbContext.insert_process_data('blum', True, 999)
+                dbContext.insert_process_data('blum', True)
             except Exception as e:
                 print(f"DB exception: {e}")
 
@@ -120,12 +119,12 @@ class StartBLUMFarming:
                         if not text[1].isalpha():
                             total_seconds = self.time_to_seconds(text) if text else None
                             if total_seconds is None or total_seconds > 28800:
-                                total_seconds = 6000  # check after one hour
+                                total_seconds = 3000  # check after half hour
                             wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                             print(f'Farming is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                             await self.handle_app_behavior(False)
                             await asyncio.sleep(total_seconds)
-                    else: # hope it'll not execute in future
+                    else: # hope it'll not execute
                         if text[0].upper() == 'Start farming'.upper():
                             print("Claiming or Farming (else block).......")
                             await self.tap_farming()
@@ -134,6 +133,6 @@ class StartBLUMFarming:
                     print("Failed to capture screenshot.")
                     await self.handle_app_behavior(False)
             except Exception as e:
-                print(f'Error: {e} \n')
+                print(f'Error: {e}')
                 print("Whatever it is, let's start again\n")
                 await self.handle_app_behavior(False)
