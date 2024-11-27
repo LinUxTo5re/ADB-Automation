@@ -1,5 +1,7 @@
-from mysqlDBqueries import mysqlDBqueries
+from handleEmulator import GenymotionManager
 
-tmp = mysqlDBqueries()
-
-tmp.fetch_last_record('mmm')
+if __name__ == '__main__':
+    
+    manager = GenymotionManager("CloneTMP - Samsung Galaxy S23")
+    manager.manage_emulator()
+    

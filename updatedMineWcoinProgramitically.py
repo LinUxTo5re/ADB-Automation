@@ -11,8 +11,9 @@ import asyncio
 from mysqlDBqueries import mysqlDBqueries
 
 class UpdatedMineWcoinProgramAsync:
-    def __init__(self, device_id):
+    def __init__(self, device_id, emulator_name):
         self.device_id = device_id
+        self.emulator_name = emulator_name
 
     async def take_screenshot(self):
         try:
@@ -26,6 +27,12 @@ class UpdatedMineWcoinProgramAsync:
             return image
         except Exception as e:
             print(f"Error capturing screenshot: {e}")
+            try:
+                dbContext = mysqlDBqueries()
+                dbContext.insert_process_data('Error-wcoin', False)
+                await asyncio.sleep(300)
+            except Exception as e:
+                print(f"DB exception: {e}")
             return None
 
     async def process_screenshot(self, image, current_strike_value=3500):
@@ -50,15 +57,13 @@ class UpdatedMineWcoinProgramAsync:
 
     def determine_sleep_time(self, number_before_slash):
         if number_before_slash < 500:
-            return 620
+            return 650
         elif number_before_slash < 1000:
-            return 500
+            return 550
         elif number_before_slash < 2000:
-            return 270
-        elif number_before_slash < 2500:
-            return 240
+            return 350
         elif number_before_slash < 3000:
-            return 180
+            return 280
         elif number_before_slash < 3500:
             return 90
         else:
@@ -67,7 +72,7 @@ class UpdatedMineWcoinProgramAsync:
     async def tap_center(self):
         total_clicks = 0
         while total_clicks < 600:
-            os.system(f"adb -s {self.device_id} shell input tap 500 1250")
+            os.system(f"adb -s {self.device_id} shell input tap 500 1250") # w-coin tap pointer
             total_clicks += 1
             if total_clicks % 100 == 0:
                 print(f"Total clicks so far: {total_clicks}")
@@ -76,30 +81,33 @@ class UpdatedMineWcoinProgramAsync:
         
         try:
             dbContext = mysqlDBqueries()
-            dbContext.insert_process_data('wcoin', False, 999)
+            dbContext.insert_process_data('wcoin', False)
         except Exception as e:
             print(f"DB exception: {e}")
 
     async def handle_app_behavior(self, is_start):
-        if not is_start:
-            print("Stopping Telegram...")
-            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")  # Close Telegram
-            await asyncio.sleep(5)
-        else:
-            os.system(f"adb -s {self.device_id} shell input swipe 900 500 100 500 300")  # Scroll right
-            await asyncio.sleep(1)
-            print("Running Telegram...")
-            os.system(f"adb -s {self.device_id} shell input tap 125 649")  # Tap on the shortcut
-            await asyncio.sleep(random.randint(7, 10))
+        try:
+            if not is_start:
+                print("Stopping Telegram...")
+                os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")  # Close Telegram
+                await asyncio.sleep(5)
+            else:
+                os.system(f"adb -s {self.device_id} shell input swipe 900 500 100 500 300")  # Scroll right
+                await asyncio.sleep(1)
+                print("Running Telegram...")
+                os.system(f"adb -s {self.device_id} shell input tap 125 649")  # Tap on the shortcut
+                await asyncio.sleep(random.randint(7, 10))
+        except Exception as e:
+            print('Exception(W-Coin): {e}')
 
     async def start_Wcoin(self):
         await self.handle_app_behavior(False)
         while True:
             try:
                 dbContext = mysqlDBqueries()
-                dbContext.insert_process_data('wcoin', True, 999)
+                dbContext.insert_process_data('wcoin', True)
             except Exception as e:
-                print(f"DB exception: {e}")
+                print(f"\nDB exception: {e}")
 
             try:
                 await self.handle_app_behavior(True)

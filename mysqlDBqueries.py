@@ -11,20 +11,20 @@ class mysqlDBqueries:
                 password="IKnowIts@Visible4u" 
             )
         
-    def insert_process_data(self, process, isrunning, last_value):
+    def insert_process_data(self, process, status):
         try:
             if self.connection.is_connected():
                 print("Connected to MySQL")
 
                 # Insert query
                 insert_query = """
-                INSERT INTO track_mining (process, isrunning, lastValue, datetime)
-                VALUES (%s, %s, %s, %s);
+                INSERT INTO track_mining (process, status, datetime)
+                VALUES (%s, %s, %s);
                 """
 
                 # Data to insert
                 current_time = datetime.now()
-                values = (process, isrunning, last_value, current_time)
+                values = (process, status, current_time)
 
                 # Execute query
                 cursor = self.connection.cursor()
@@ -71,8 +71,4 @@ class mysqlDBqueries:
 # process with their code:
 # 1) wcoin
 # 2) mmm
-# tmp = mysqlDBqueries()
-# tmp.insert_process_data('mmm', False, 999)
-# tmp = mysqlDBqueries()
-
-# tmp.fetch_last_record('mmm')
+# 3) blum
