@@ -7,7 +7,7 @@ from startBLUMFarming import StartBLUMFarming
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
         self.device_id = "127.0.0.1:6555"
-        self.emulator_name = "CloneTMP - Samsung Galaxy S23" 
+        self.emulator_name = "TelegramBotEmulator" 
         
     async def start_all(self):
         os.system('clear')

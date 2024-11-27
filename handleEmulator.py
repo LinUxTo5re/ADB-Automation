@@ -56,5 +56,5 @@ class GenymotionManager:
             time.sleep(1800)   
 
 if __name__ == '__main__':
-    genyManager = GenymotionManager("CloneTMP - Samsung Galaxy S23")
+    genyManager = GenymotionManager("TelegramBotEmulator")
     genyManager.manage_emulator()
