@@ -21,7 +21,7 @@ class UpdatedMineWcoinProgram:
             else:
                 print("Running Telegram...")
                 os.system(f"adb -s {self.device_id} shell input tap 240 260")  # Tap on the shortcut
-                time.sleep(10)
+                time.sleep(15)
         except Exception as e:
             print(f"Exception(W-Coin): {e}")
 

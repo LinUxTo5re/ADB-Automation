@@ -43,9 +43,9 @@ class StartTronKeeper:
                     if i == 0:
                         tap_x, tap_y = 400, 900
                     else: 
+                        print('earned usdt, now earning open league coins')
                         tap_x, tap_y = 400, 950
                     self.tap_farming(tap_x, tap_y)   
-                    print('earned usdt, now earning open league coins')
 
                 total_seconds = 3600 # 1 hours
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
