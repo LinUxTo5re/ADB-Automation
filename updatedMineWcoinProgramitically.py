@@ -9,7 +9,7 @@ class UpdatedMineWcoinProgram:
         self.sleep_val = 660
 
     def tap_center(self):
-        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 600); do input tap 400 750; sleep 0.05; done"''')
+        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 600); do input tap 400 750; sleep 0.2; done"''')
         print("Finished all taps.")
 
     def handle_app_behavior(self, is_start):

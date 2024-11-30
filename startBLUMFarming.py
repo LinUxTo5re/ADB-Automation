@@ -17,7 +17,7 @@ class StartBLUMFarming:
             time.sleep(5)
 
     def tap_farming(self):
-        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 5); do input tap 400 1000; sleep 0.03; done"''')  # Farming button position
+        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 5); do input tap 400 1000; sleep 5; done"''')  # Farming button position
         time.sleep(5)
 
     async def start_blum(self):
