@@ -5,6 +5,8 @@ import os
 from startBLUMFarming import StartBLUMFarming
 from startTronKeeper import StartTronKeeper
 from startSeedFarming import StartSeedFarming
+from startTimeFarm import StartTimeFarmFarming
+from startFrogFarm import StartFrogFarmFarming
 
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
@@ -15,7 +17,9 @@ class StartMiningMemeCoinsOnTelegram:
         # Run mining tasks concurrently
         await asyncio.gather(
             self.start_seed_coin(),
+            self.start_time_coin(),
             self.start_tron_coin(),
+            self.start_frog_coin(),
             self.start_blum_coin(),
             self.start_mmm_coin(),
             self.start_w_coin()
@@ -32,10 +36,18 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_blum_coin(self):
         blumcoin = StartBLUMFarming(self.device_id)
         await blumcoin.start_blum()  # 45 min await in main()
+
+    async def start_frog_coin(self):
+        frogcoin = StartFrogFarmFarming(self.device_id)
+        await frogcoin.start_FrogFarm()  # 45 min await in main()
     
     async def start_tron_coin(self):
         troncoin = StartTronKeeper(self.device_id)
         await troncoin.start_Tron()  # 60 min await in main()
+    
+    async def start_time_coin(self):
+        secondcoin = StartTimeFarmFarming(self.device_id)
+        await secondcoin.start_TimeFarm()  # 60 min await in main()
 
     async def start_seed_coin(self):
         seedcoin = StartSeedFarming(self.device_id)

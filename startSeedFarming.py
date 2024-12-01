@@ -59,7 +59,6 @@ class StartSeedFarming:
             finally:
                 await asyncio.sleep(total_seconds)
 
-
-if __name__ == "__main__":
-    telegram_mine = StartSeedFarming("emulator-5556")
-    asyncio.run(telegram_mine.start_Seed())
+# if __name__ == "__main__":
+#     telegram_mine = StartSeedFarming("emulator-5556")
+#     asyncio.run(telegram_mine.start_Seed())
