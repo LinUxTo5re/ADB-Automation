@@ -49,22 +49,20 @@ async def execute_command(path, command):
 async def list_emulators():
     command = ["emulator", "-list-avds"]
     stdout, stderr = await execute_command(emulator_path, command)
-    if stderr:
-        print(f"Error: {stderr}")
-    else:
+    if stdout:
         emulators = stdout.splitlines()[1:]
         if emulators:
             return emulators
         else:
             print("No emulators found.")
             return []
+    else:
+        print(f"Error: {stderr}")
 
 async def get_emulator_status():
     command = ["adb", "devices"]
     stdout, stderr = await execute_command(adb_path, command)
-    if stderr:
-        print(f"Error: {stderr}")
-    else:
+    if stdout:
         devices = stdout.splitlines()[1:]
         running_devices = []
         if devices:
@@ -73,7 +71,10 @@ async def get_emulator_status():
                     device_name, _ = device.split("\t")
                     running_devices.append(device_name)
         return running_devices
-
+    else:
+        print(f"Error: {stderr}")
+        return None
+    
 async def main():
     os.system('cls')
     emulators_ip = {
@@ -81,18 +82,24 @@ async def main():
     }
 
     while True:
-        emulators_list = await list_emulators()
-        running_devices = await get_emulator_status()
+        try:
+            emulators_list = await list_emulators()
+            running_devices = await get_emulator_status()
 
-        print(f"Available emulators: {emulators_list}")
-        for emulator in emulators_list:
-                if emulator in emulators_ip:
-                    if emulators_ip[emulator] not in running_devices:
-                        start_device = StartEmulators()
-                        await start_device.start_emulator(emulator)
-
-        print("Will check after 30 seconds...")
-        await asyncio.sleep(30)
+            print(f"Available emulators: {emulators_list}")
+            if emulators_list:
+                for emulator in emulators_list:
+                        if emulator in emulators_ip:
+                            if emulators_ip[emulator] not in running_devices:
+                                start_device = StartEmulators()
+                                await start_device.start_emulator(emulator)
+            else:
+                print("No emulators found.")
+        except Exception as e:
+            print(f"Exception: {e}")
+        finally:
+            print("Will check after 30 seconds...")
+            await asyncio.sleep(30)
 
 if __name__ == "__main__":
     asyncio.run(main())
