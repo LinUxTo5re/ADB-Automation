@@ -9,20 +9,21 @@ class StartFrogFarmFarming:
     def handle_app_behavior(self, is_start):
         if is_start:
             print("\nRunning Telegram...")
-            os.system(f"adb -s {self.device_id} shell input tap 530 270")  # FrogFarm shortcut on homescreen
+            os.system(f"adb -s {self.device_id} shell input tap 300 415")  # FrogFarm shortcut on homescreen
             time.sleep(15)
         else:
             print("Stopping Telegram...")
-            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")
+            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
     def tap_farming(self, tap_x, tap_y, iter):
         if iter == 1:
-            os.system(f"adb -s {self.device_id} shell input tap 500 1150") # click on tasks
+            os.system(f"adb -s {self.device_id} shell input tap 500 1130") # click on tasks
             time.sleep(3)
-            os.system(f"adb -s {self.device_id} shell input tap 400 550") # click on daily reward
+            os.system(f"adb -s {self.device_id} shell input tap 400 350") # click on daily reward
 
-        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 5); do input tap {tap_x} {tap_y}; sleep 5; done"''')  # Farming/daily reward button position
+        sequence = " ".join(str(i) for i in range(1, 6))
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {tap_x} {tap_y}; sleep 5; done"''') # Farming/daily reward button position
         time.sleep(5)
 
     async def start_FrogFarm(self):
@@ -40,7 +41,7 @@ class StartFrogFarmFarming:
                         tap_x, tap_y = 350, 1000 # Farming btn position
                     else:
                         print("Farming completed, now claiming daily reward...")
-                        tap_x, tap_y = 400, 1190 # Daily task
+                        tap_x, tap_y = 400, 370 # Daily task
                     self.tap_farming(tap_x, tap_y, i)
 
                 print("Successfully Claimed or Farmed, Ready to exit for now......")

@@ -11,23 +11,23 @@ class StartTronKeeper:
         if is_start:
             print("Running Telegram...")
             time.sleep(1)
-            os.system(f"{adb_command}input tap 550 450")  # TronKeeper shortcut on homescreen
+            os.system(f"{adb_command}input tap 650 900")  # TronKeeper shortcut on homescreen
             time.sleep(15)
         else:
             print("Stopping Telegram...")
-            os.system(f"{adb_command}am force-stop org.telegram.messenger")
+            os.system(f"{adb_command}am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
     def tap_farming(self, tap_x, tap_y):
         for _ in range(3): # daily 3 free hold actions
-            os.system(f'''adb -s {self.device_id} shell  input tap 400 400''')  # closing pop-up (optional)
+            os.system(f'''adb -s {self.device_id} shell  input tap 400 300''')  # closing pop-up (optional)
             time.sleep(2)
             os.system(f'''adb -s {self.device_id} shell "input swipe {tap_x} {tap_y} {tap_x} {tap_y} 35000"''')  # Hold button for 35 seconds (extra 5 sec added)
             time.sleep(5)
-            os.system(f'''adb -s {self.device_id} shell  input tap 400 400''')  # closing pop-up (optional)
+            os.system(f'''adb -s {self.device_id} shell  input tap 400 300''')  # closing pop-up (optional)
             time.sleep(2)
       
-        os.system(f"adb -s {self.device_id} shell input tap 186 1100") # clicking earn open league coins for next iter
+        os.system(f"adb -s {self.device_id} shell input tap 200 1100") # clicking earn open league coins for next iter
 
     async def start_Tron(self):
         self.handle_app_behavior(False)
@@ -41,10 +41,10 @@ class StartTronKeeper:
                 tap_x = tap_y = 0
                 for i in range(2): # usdt and earn open league coins
                     if i == 0:
-                        tap_x, tap_y = 400, 900
+                        tap_x, tap_y = 400, 700
                     else: 
                         print('earned usdt, now earning open league coins')
-                        tap_x, tap_y = 400, 950
+                        tap_x, tap_y = 400, 750
                     self.tap_farming(tap_x, tap_y)   
 
                 total_seconds = 3600 # 1 hours

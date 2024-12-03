@@ -9,15 +9,16 @@ class StartTimeFarmFarming:
     def handle_app_behavior(self, is_start):
         if is_start:
             print("\nRunning Telegram...")
-            os.system(f"adb -s {self.device_id} shell input tap 90 450")  # TimeFarm shortcut on homescreen
+            os.system(f"adb -s {self.device_id} shell input tap 470 410")  # TimeFarm shortcut on homescreen
             time.sleep(15)
         else:
             print("Stopping Telegram...")
-            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")
+            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
     def tap_farming(self):
-        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 5); do input tap 350 950; sleep 5; done"''')  # Farming button position
+        sequence = " ".join(str(i) for i in range(1, 6))
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 980; sleep 5; done"''') # Farming button position
         time.sleep(5)
 
     async def start_TimeFarm(self):

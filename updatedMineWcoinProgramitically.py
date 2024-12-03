@@ -9,18 +9,19 @@ class UpdatedMineWcoinProgram:
         self.sleep_val = 660
 
     def tap_center(self):
-        os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 600); do input tap 400 750; sleep 0.2; done"''')
+        sequence = " ".join(str(i) for i in range(1, 600))
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 700; sleep 0.3; done"''') # Farming button position
         print("Finished all taps.")
 
     def handle_app_behavior(self, is_start):
         try:
             if not is_start:
                 print("Stopping Telegram...")
-                os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")  # Close Telegram
+                os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")  # Close Telegram
                 time.sleep(5)
             else:
                 print("Running Telegram...")
-                os.system(f"adb -s {self.device_id} shell input tap 240 260")  # Tap on the shortcut
+                os.system(f"adb -s {self.device_id} shell input tap 650 400")  # Tap on the shortcut
                 time.sleep(15)
         except Exception as e:
             print(f"Exception(W-Coin): {e}")

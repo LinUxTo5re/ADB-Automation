@@ -9,25 +9,26 @@ class StartSeedFarming:
     def handle_app_behavior(self, is_start):
         if is_start:
             print("\nRunning Telegram...")
-            os.system(f"adb -s {self.device_id} shell input tap 675 280")  # Seed shortcut on homescreen
+            os.system(f"adb -s {self.device_id} shell input tap 470 650")  # Seed shortcut on homescreen
             time.sleep(15)
         else:
             print("Stopping Telegram...")
-            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger")
+            os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
     def tap_farming(self, tap_x, tap_y, iter):
-        os.system(f"adb -s {self.device_id} shell input tap 170 200")  # closing pop-up (optional)
+        os.system(f"adb -s {self.device_id} shell input tap 400 155")  # closing pop-up (optional)
         time.sleep(2)
 
         if iter == 0:
-            os.system(f'''adb -s {self.device_id} shell "for i in $(seq 1 3); do input tap {tap_x} {tap_y}; sleep 5; done"''')  # Farming button position
+            sequence = " ".join(str(i) for i in range(1, 4))
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {tap_x} {tap_y}; sleep 5; done"''') # Farming button position
             print("Seeding completed, processing worm ...")
         else: 
             os.system(f"adb -s {self.device_id} shell input tap {tap_x} {tap_y}")  # Farming worm button position
 
         time.sleep(2)
-        os.system(f"adb -s {self.device_id} shell input tap 170 200")  # closing pop-up (optional)
+        os.system(f"adb -s {self.device_id} shell input tap 400 125")  # closing pop-up (optional)
         time.sleep(2)
 
     async def start_Seed(self):
@@ -43,9 +44,9 @@ class StartSeedFarming:
 
                 for i in range(2):
                     if i == 0:
-                        tap_x, tap_y = 600, 935 # Claim button position
+                        tap_x, tap_y = 400, 950 # Claim button position
                     else:
-                        tap_x, tap_y = 390, 740 # Worm button position
+                        tap_x, tap_y = 400, 705 # Worm button position
                     self.tap_farming(tap_x, tap_y, i)
 
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
