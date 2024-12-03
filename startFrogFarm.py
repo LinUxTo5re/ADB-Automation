@@ -8,7 +8,7 @@ class StartFrogFarmFarming:
 
     def handle_app_behavior(self, is_start):
         if is_start:
-            print("\nRunning Telegram...")
+            print("Running Telegram...")
             os.system(f"adb -s {self.device_id} shell input tap 300 415")  # FrogFarm shortcut on homescreen
             time.sleep(15)
         else:

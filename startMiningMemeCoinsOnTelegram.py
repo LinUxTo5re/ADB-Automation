@@ -8,6 +8,8 @@ from startSeedFarming import StartSeedFarming
 from startTimeFarm import StartTimeFarmFarming
 from startFrogFarm import StartFrogFarmFarming
 from startHeadCoin import StartHeadCoin
+from startSpell import StartSpellBoosting
+from startSwithcPocketFi import StartSwitchClaiming
 
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
@@ -17,7 +19,9 @@ class StartMiningMemeCoinsOnTelegram:
         os.system('clear')
         # Run mining tasks concurrently
         await asyncio.gather(
+            self.start_switch_coin(),
             self.start_head_coin(),
+            self.start_spell_coin(),
             self.start_seed_coin(),
             self.start_time_coin(),
             self.start_tron_coin(),
@@ -55,9 +59,17 @@ class StartMiningMemeCoinsOnTelegram:
         seedcoin = StartSeedFarming(self.device_id)
         await seedcoin.start_Seed()  # 90 min await in main()
 
+    async def start_spell_coin(self):
+        spellcoin = StartSpellBoosting(self.device_id)
+        await spellcoin.start_Spell()  # 90 min await in main()
+
     async def start_head_coin(self):
         headcoin = StartHeadCoin(self.device_id)
         await headcoin.start_Head()  # 120 min await in main()
+    
+    async def start_switch_coin(self):
+        switchcoin = StartSwitchClaiming(self.device_id)
+        await switchcoin.start_Switch()  # 120 min await in main()
 
 if __name__ == "__main__":
     telegram_mine = StartMiningMemeCoinsOnTelegram()

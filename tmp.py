@@ -1,8 +1,11 @@
-import os
+import uiautomator2 as u2
 
-if __name__ == '__main__':
-    print('hello world')
-    # os.system(f"adb -s emulator-5556 shell input tap 550 1000")
-    os.system(f'''adb -s emulator-5554 shell "for i in $(seq 1 600); do input tap 400 750; sleep 0.05; done"''')
+device_id = "127.0.0.1:6555"  # Replace with your emulator ID
+d = u2.connect(device_id)
+print(d.info)  # Check device information
 
-    
+# Dump the current UI hierarchy
+ui_dump = d.dump_hierarchy()
+print(ui_dump)  # Print or save to a file for inspection
+with open("ui_dump.xml", "w") as f:
+    f.write(ui_dump)
