@@ -10,13 +10,15 @@ class StartBLUMFarming:
         if is_start:
             print("Running Telegram...")
             os.system(f"adb -s {self.device_id} shell input tap 110 405")  # BLUM shortcut on homescreen
-            time.sleep(15)
+            time.sleep(20)
         else:
             print("Stopping Telegram...")
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
-    def tap_farming(self):      
+    def tap_farming(self):
+        os.system(f"adb -s {self.device_id} shell input tap 100 1140")  # Home menu btn 
+        time.sleep(2)
         sequence = " ".join(str(i) for i in range(1, 6))
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1000; sleep 5; done"''') # Farming button position
         time.sleep(5)
@@ -41,7 +43,6 @@ class StartBLUMFarming:
                 print("Whatever it is, let's start again\n")
             finally:
                 await asyncio.sleep(total_seconds)
-
 
 # if __name__ == "__main__":
 #     telegram_mine = StartBLUMFarming("127.0.0.1:6555")

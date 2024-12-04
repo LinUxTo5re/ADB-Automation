@@ -1,7 +1,7 @@
-from updatedMineWcoinProgramitically import UpdatedMineWcoinProgram
-from startMMMFarming import StartMMMFarming
 import asyncio
 import os
+from updatedMineWcoinProgramitically import UpdatedMineWcoinProgram
+from startMMMFarming import StartMMMFarming
 from startBLUMFarming import StartBLUMFarming
 from startTronKeeper import StartTronKeeper
 from startSeedFarming import StartSeedFarming
@@ -10,6 +10,8 @@ from startFrogFarm import StartFrogFarmFarming
 from startHeadCoin import StartHeadCoin
 from startSpell import StartSpellBoosting
 from startSwithcPocketFi import StartSwitchClaiming
+from startAngryMiner import StartAngryMiner
+from startHipoGang import StartHipoGangFarming
 
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
@@ -21,6 +23,7 @@ class StartMiningMemeCoinsOnTelegram:
         await asyncio.gather(
             self.start_switch_coin(),
             self.start_head_coin(),
+            self.start_angryminer_coin(),
             self.start_spell_coin(),
             self.start_seed_coin(),
             self.start_time_coin(),
@@ -28,12 +31,17 @@ class StartMiningMemeCoinsOnTelegram:
             self.start_frog_coin(),
             self.start_blum_coin(),
             self.start_mmm_coin(),
+            self.start_hipo_coin(),
             self.start_w_coin()
         )
 
     async def start_w_coin(self):
         wcoin = UpdatedMineWcoinProgram(self.device_id)
-        await wcoin.start_Wcoin()
+        await wcoin.start_Wcoin() # 11 min await in main()
+
+    async def start_hipo_coin(self):
+        hipocoin = StartHipoGangFarming(self.device_id)
+        await hipocoin.start_HipoGang() # 16 min await in main()
 
     async def start_mmm_coin(self):
         mmmcoin = StartMMMFarming(self.device_id)
@@ -62,6 +70,10 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_spell_coin(self):
         spellcoin = StartSpellBoosting(self.device_id)
         await spellcoin.start_Spell()  # 90 min await in main()
+
+    async def start_angryminer_coin(self):
+        angryminer = StartAngryMiner(self.device_id)
+        await angryminer.start_AngryMiner()  # 120 min await in main()
 
     async def start_head_coin(self):
         headcoin = StartHeadCoin(self.device_id)

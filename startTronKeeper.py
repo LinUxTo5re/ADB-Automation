@@ -12,7 +12,7 @@ class StartTronKeeper:
             print("Running Telegram...")
             time.sleep(1)
             os.system(f"{adb_command}input tap 650 900")  # TronKeeper shortcut on homescreen
-            time.sleep(15)
+            time.sleep(20)
         else:
             print("Stopping Telegram...")
             os.system(f"{adb_command}am force-stop org.telegram.messenger.web")

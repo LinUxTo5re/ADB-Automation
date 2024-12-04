@@ -10,7 +10,7 @@ class StartSpellBoosting:
         if is_start:
             print("Running Telegram...")
             os.system(f"adb -s {self.device_id} shell input tap 655 655")  # Spell shortcut on homescreen
-            time.sleep(15)
+            time.sleep(20)
         else:
             print("Stopping Telegram...")
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")

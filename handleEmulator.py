@@ -41,7 +41,7 @@ class GenymotionManager:
         self.stop_emulator(self.emulator_name)
         while True:
             print(f"\nHandling genymotion emulator: {self.emulator_name}")
-            sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + 1800))
+            sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time()))
 
             running_emulator = self.get_running_emulator()
             if not running_emulator == self.emulator_name or not running_emulator:

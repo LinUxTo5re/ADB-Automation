@@ -10,7 +10,7 @@ class StartHeadCoin:
         if is_start:
             print("Running Telegram...")
             os.system(f"adb -s {self.device_id} shell input tap 110 650")  # Head shortcut on homescreen
-            time.sleep(30)
+            time.sleep(45)
         else:
             print("Stopping Telegram...")
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")

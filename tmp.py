@@ -1,11 +1,4 @@
-import uiautomator2 as u2
+import os
 
-device_id = "127.0.0.1:6555"  # Replace with your emulator ID
-d = u2.connect(device_id)
-print(d.info)  # Check device information
-
-# Dump the current UI hierarchy
-ui_dump = d.dump_hierarchy()
-print(ui_dump)  # Print or save to a file for inspection
-with open("ui_dump.xml", "w") as f:
-    f.write(ui_dump)
+while True:    
+    os.system(f'''adb -s 127.0.0.1:6555 shell input tap 400 700''') # Farming button position
