@@ -8,7 +8,7 @@ class StartSeedFarming:
 
     def handle_app_behavior(self, is_start):
         if is_start:
-            print("\nRunning Telegram...")
+            print("Running Telegram...")
             os.system(f"adb -s {self.device_id} shell input tap 470 650")  # Seed shortcut on homescreen
             time.sleep(20)
         else:
@@ -26,6 +26,7 @@ class StartSeedFarming:
             print("Seeding completed, processing worm ...")
         else: 
             os.system(f"adb -s {self.device_id} shell input tap {tap_x} {tap_y}")  # Farming worm button position
+            os.system(f"adb -s {self.device_id} shell input tap 320 750")  # Christmas gift --> remove later
 
         time.sleep(2)
         os.system(f"adb -s {self.device_id} shell input tap 400 125")  # closing pop-up (optional)

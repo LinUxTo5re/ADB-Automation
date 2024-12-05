@@ -20,9 +20,9 @@ class StartFrogFarmFarming:
         if iter == 1:
             os.system(f"adb -s {self.device_id} shell input tap 500 1130") # click on tasks
             time.sleep(3)
-            os.system(f"adb -s {self.device_id} shell input tap 400 350") # click on daily reward
+            os.system(f"adb -s {self.device_id} shell input tap 400 375") # click on daily reward
 
-        sequence = " ".join(str(i) for i in range(1, 6))
+        sequence = " ".join(str(i) for i in range(1, 3))
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {tap_x} {tap_y}; sleep 5; done"''') # Farming/daily reward button position
         time.sleep(5)
 
@@ -41,7 +41,7 @@ class StartFrogFarmFarming:
                         tap_x, tap_y = 350, 1000 # Farming btn position
                     else:
                         print("Farming completed, now claiming daily reward...")
-                        tap_x, tap_y = 400, 370 # Daily task
+                        tap_x, tap_y = 400, 1100 # Daily task
                     self.tap_farming(tap_x, tap_y, i)
 
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
@@ -56,5 +56,5 @@ class StartFrogFarmFarming:
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":
-#     telegram_mine = StartFrogFarmFarming("emulator-5556")
+#     telegram_mine = StartFrogFarmFarming("127.0.0.1:6555")
 #     asyncio.run(telegram_mine.start_FrogFarm())

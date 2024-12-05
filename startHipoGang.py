@@ -18,7 +18,12 @@ class StartHipoGangFarming:
 
     def tap_farming(self):      
         sequence = " ".join(str(i) for i in range(1, 550))
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 800; sleep 0.5; done"''') # Farming button position
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 800; sleep 0.1; done"''') # Farming button position
+        time.sleep(5)
+
+        os.system(f'''adb -s {self.device_id} shell input tap 350 300''') # click on daily reward btn
+        time.sleep(5)
+        os.system(f'''adb -s {self.device_id} shell input tap 400 1100''') # claim daily reward
         time.sleep(5)
 
     async def start_HipoGang(self):
@@ -42,6 +47,6 @@ class StartHipoGangFarming:
             finally:
                 await asyncio.sleep(total_seconds)
 
-# if __name__ == "__main__":
-#     telegram_mine = StartHipoGangFarming("127.0.0.1:6555")
-#     asyncio.run(telegram_mine.start_HipoGang())
+if __name__ == "__main__":
+    telegram_mine = StartHipoGangFarming("127.0.0.1:6555")
+    asyncio.run(telegram_mine.start_HipoGang())
