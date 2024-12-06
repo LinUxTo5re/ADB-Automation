@@ -21,10 +21,10 @@ class StartHipoGangFarming:
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 800; sleep 0.1; done"''') # Farming button position
         time.sleep(5)
 
-        os.system(f'''adb -s {self.device_id} shell input tap 350 300''') # click on daily reward btn
-        time.sleep(5)
-        os.system(f'''adb -s {self.device_id} shell input tap 400 1100''') # claim daily reward
-        time.sleep(5)
+        # os.system(f'''adb -s {self.device_id} shell input tap 350 300''') # click on daily reward btn
+        # time.sleep(5)
+        # os.system(f'''adb -s {self.device_id} shell input tap 400 1100''') # claim daily reward
+        # time.sleep(5)
 
     async def start_HipoGang(self):
         self.handle_app_behavior(False)

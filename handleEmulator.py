@@ -41,7 +41,7 @@ class GenymotionManager:
         self.stop_emulator(self.emulator_name)
         while True:
             print(f"\nHandling genymotion emulator: {self.emulator_name}")
-            sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time()))
+            sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + 600))
 
             running_emulator = self.get_running_emulator()
             if not running_emulator == self.emulator_name or not running_emulator:
@@ -56,5 +56,6 @@ class GenymotionManager:
             time.sleep(600)   
 
 if __name__ == '__main__':
+    os.system('clear')
     genyManager = GenymotionManager("TelegramBot")
     genyManager.manage_emulator()

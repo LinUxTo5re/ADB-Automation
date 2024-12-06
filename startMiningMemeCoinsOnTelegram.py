@@ -12,6 +12,10 @@ from startSpell import StartSpellBoosting
 from startSwithcPocketFi import StartSwitchClaiming
 from startAngryMiner import StartAngryMiner
 from startHipoGang import StartHipoGangFarming
+from startNxtBTC import StartNxtBTC
+from startTonKombat import StartTonKombat
+from startNordomGates import StartNordomGates
+from startIceBerg import StartIceBerg
 
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
@@ -21,13 +25,17 @@ class StartMiningMemeCoinsOnTelegram:
         os.system('clear')
         # Run mining tasks concurrently
         await asyncio.gather(
+            self.start_iceberg_coin(),
             self.start_switch_coin(),
             self.start_head_coin(),
             self.start_angryminer_coin(),
+            self.start_nordomg_coin(),
             self.start_spell_coin(),
             self.start_seed_coin(),
             self.start_time_coin(),
             self.start_tron_coin(),
+            self.start_tonkombat_coin(),
+            self.start_nxtbtc_coin(),
             self.start_frog_coin(),
             self.start_blum_coin(),
             self.start_mmm_coin(),
@@ -54,7 +62,15 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_frog_coin(self):
         frogcoin = StartFrogFarmFarming(self.device_id)
         await frogcoin.start_FrogFarm()  # 45 min await in main()
-    
+
+    async def start_nxtbtc_coin(self):
+        nxtbtccoin = StartNxtBTC(self.device_id)
+        await nxtbtccoin.start_NxtBTC()  # 45 min await in main()
+
+    async def start_tonkombat_coin(self):
+        tonkombat = StartTonKombat(self.device_id)
+        await tonkombat.start_TON()  # 55 min await in main()
+
     async def start_tron_coin(self):
         troncoin = StartTronKeeper(self.device_id)
         await troncoin.start_Tron()  # 60 min await in main()
@@ -71,6 +87,10 @@ class StartMiningMemeCoinsOnTelegram:
         spellcoin = StartSpellBoosting(self.device_id)
         await spellcoin.start_Spell()  # 90 min await in main()
 
+    async def start_nordomg_coin(self):
+        nordomgcoin = StartNordomGates(self.device_id)
+        await nordomgcoin.start_NordomG()  # 105 min await in main()
+
     async def start_angryminer_coin(self):
         angryminer = StartAngryMiner(self.device_id)
         await angryminer.start_AngryMiner()  # 120 min await in main()
@@ -82,6 +102,10 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_switch_coin(self):
         switchcoin = StartSwitchClaiming(self.device_id)
         await switchcoin.start_Switch()  # 120 min await in main()
+
+    async def start_iceberg_coin(self):
+        icebergcoin = StartIceBerg(self.device_id)
+        await icebergcoin.start_IceBerg()  # 180 min await in main()
 
 if __name__ == "__main__":
     telegram_mine = StartMiningMemeCoinsOnTelegram()
