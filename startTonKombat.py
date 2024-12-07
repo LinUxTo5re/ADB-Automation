@@ -27,18 +27,19 @@ class StartTonKombat:
 
         if is_fight_required:
             print("Playing fights..... wait for 5 fights (max. 5 min)")
+            os.system(f'''adb -s {self.device_id} shell input tap 400 1115''')  # Kombat btn position
+            time.sleep(3)
+            os.system(f'''adb -s {self.device_id} shell input tap 500 950''')  # Fight btn position
+
             for _ in range(5):
-                os.system(f'''adb -s {self.device_id} shell input tap 400 1115''')  # Kombat btn position
-                time.sleep(3)
-                os.system(f'''adb -s {self.device_id} shell input tap 500 950''')  # Fight btn position
                 time.sleep(45) # wating to fight get complete
-                os.system(f'''adb -s {self.device_id} shell input tap 550 1130''')  # Next fight btn position
+                os.system(f'''adb -s {self.device_id} shell input tap 600 1130''')  # Next fight btn position
                 time.sleep(3)
                 if _ == 4:
                     os.system(f'''adb -s {self.device_id} shell input tap 100 1120''')  # Home btn position
                     time.sleep(3)
-                    continue
-                os.system(f'''adb -s {self.device_id} shell input tap 500 1100''')  # Play again btn position
+                    break
+                os.system(f'''adb -s {self.device_id} shell input tap 500 1130''')  # Play again btn position
         
         os.system(f'''adb -s {self.device_id} shell input tap 100 1115''')  # Menu button position
         time.sleep(3)
@@ -75,6 +76,6 @@ class StartTonKombat:
                 await asyncio.sleep(total_seconds)
                 count = count + 1
 
-# if __name__ == "__main__":
-#     telegram_mine = StartTonKombat("127.0.0.1:6555")
-#     asyncio.run(telegram_mine.start_TON())
+if __name__ == "__main__":
+    telegram_mine = StartTonKombat("127.0.0.1:6555")
+    asyncio.run(telegram_mine.start_TON())

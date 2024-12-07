@@ -28,7 +28,7 @@ class StartTaDa:
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 550 885; sleep 5; done"''')  # Claiming btn position
         time.sleep(5)
 
-        os.system(f"adb -s {self.device_id} shell do input tap 350 800")
+        os.system(f"adb -s {self.device_id} shell input tap 350 800")
         time.sleep(3)
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 250 885; sleep 5; done"''')  # Mining btn position
         time.sleep(5)

@@ -23,6 +23,7 @@ class StartNordomGates:
 
     def tap_farming(self, is_Knock_Knock):
         if is_Knock_Knock:
+            print('Playing Knock-Knock.....')
             os.system(f"adb -s {self.device_id} shell input tap 400 1000") # Knock Knock, Who's There?
             sequence = " ".join(str(i) for i in range(1, 200))
             os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 600; done;"''') # Knock on the door

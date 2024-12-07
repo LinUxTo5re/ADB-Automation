@@ -16,6 +16,7 @@ from startNxtBTC import StartNxtBTC
 from startTonKombat import StartTonKombat
 from startNordomGates import StartNordomGates
 from startIceBerg import StartIceBerg
+from startCGX import StartCGX
 
 class StartMiningMemeCoinsOnTelegram:
     def __init__(self):
@@ -25,22 +26,23 @@ class StartMiningMemeCoinsOnTelegram:
         os.system('clear')
         # Run mining tasks concurrently
         await asyncio.gather(
+            self.start_w_coin(),
+            self.start_hipo_coin(),
             self.start_iceberg_coin(),
             self.start_switch_coin(),
             self.start_head_coin(),
             self.start_angryminer_coin(),
             self.start_nordomg_coin(),
             self.start_spell_coin(),
+            self.start_mmm_coin(),
             self.start_seed_coin(),
             self.start_time_coin(),
             self.start_tron_coin(),
             self.start_tonkombat_coin(),
+            self.start_cgx_coin(),
             self.start_nxtbtc_coin(),
             self.start_frog_coin(),
-            self.start_blum_coin(),
-            self.start_mmm_coin(),
-            self.start_hipo_coin(),
-            self.start_w_coin()
+            self.start_blum_coin()
         )
 
     async def start_w_coin(self):
@@ -66,6 +68,10 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_nxtbtc_coin(self):
         nxtbtccoin = StartNxtBTC(self.device_id)
         await nxtbtccoin.start_NxtBTC()  # 45 min await in main()
+
+    async def start_cgx_coin(self):
+        cgxcoin = StartCGX(self.device_id)
+        await cgxcoin.start_CGX()  # 45 min await in main()
 
     async def start_tonkombat_coin(self):
         tonkombat = StartTonKombat(self.device_id)
