@@ -26,7 +26,7 @@ class StartNordomGates:
             print('Playing Knock-Knock.....')
             os.system(f"adb -s {self.device_id} shell input tap 400 1000") # Knock Knock, Who's There?
             sequence = " ".join(str(i) for i in range(1, 200))
-            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 600; done;"''') # Knock on the door
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 425 700; done"''')  # Knock on the door
         
         loc_pick = [200, 400, 600]
         for _ in range(10):
@@ -38,13 +38,13 @@ class StartNordomGates:
 
     async def start_NordomG(self):
         self.handle_app_behavior(False)
-        count = 1
-        is_Knock_Knock = True
+        count = 0
+        is_Knock_Knock = False
         while True:
             print("\nStarting NardomG .....")
 
             if count % 2 == 0:
-                is_Knock_Knock = False
+                is_Knock_Knock = True
             try: 
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (NardomG).......")

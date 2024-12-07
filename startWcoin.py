@@ -1,17 +1,24 @@
 import os
 import time
-import random
 import asyncio
 
 class UpdatedMineWcoinProgram:
     def __init__(self, device_id):
         self.device_id = device_id
-        self.sleep_val = 660
+        self.sleep_val = 900
 
-    def tap_center(self):
+    def tap_center(self, is_WAI):
         sequence = " ".join(str(i) for i in range(1, 600))
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 700; sleep 0.3; done"''') # Farming button position
         print("Finished all taps.")
+
+        if is_WAI:
+            os.system(f"adb -s {self.device_id} shell input tap 520 415")  # Tap on the W-AI
+            time.sleep(10)
+
+            sequence = " ".join(str(i) for i in range(1, 4))
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1100; sleep 0.5; done;"''')  # Claim W-AI
+            time.sleep(2)
 
     def handle_app_behavior(self, is_start):
         try:
@@ -27,12 +34,16 @@ class UpdatedMineWcoinProgram:
             print(f"Exception(W-Coin): {e}")
 
     async def start_Wcoin(self):
+        count, is_WAI = 0, False
         self.handle_app_behavior(False)
         while True:
             try:
+                if count % 45 == 0: # Do check W-AI after every 3 hours or 45 counts
+                    is_WAI = True
+
                 print("\nStarting mining W-coin...")
                 self.handle_app_behavior(True)
-                self.tap_center()                
+                self.tap_center(is_WAI)                
                 sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + self.sleep_val))
                 print(f"sleeping for {self.sleep_val} seconds (until {sleep_time}).")
                 self.handle_app_behavior(False)
@@ -40,3 +51,7 @@ class UpdatedMineWcoinProgram:
                 print(f"Exception: {e}")
             finally:
                 await asyncio.sleep(self.sleep_val)
+
+# if __name__ == "__main__":
+#     telegram_mine = UpdatedMineWcoinProgram("127.0.0.1:6555")
+#     asyncio.run(telegram_mine.start_Wcoin())

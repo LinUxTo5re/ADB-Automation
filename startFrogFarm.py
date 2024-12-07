@@ -21,6 +21,7 @@ class StartFrogFarmFarming:
             os.system(f"adb -s {self.device_id} shell input tap 500 1130") # click on tasks
             time.sleep(3)
             os.system(f"adb -s {self.device_id} shell input tap 400 375") # click on daily reward
+            time.sleep(3)
 
         sequence = " ".join(str(i) for i in range(1, 3))
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {tap_x} {tap_y}; sleep 5; done"''') # Farming/daily reward button position
@@ -55,6 +56,6 @@ class StartFrogFarmFarming:
             finally:
                 await asyncio.sleep(total_seconds)
 
-# if __name__ == "__main__":
-#     telegram_mine = StartFrogFarmFarming("127.0.0.1:6555")
-#     asyncio.run(telegram_mine.start_FrogFarm())
+if __name__ == "__main__":
+    telegram_mine = StartFrogFarmFarming("127.0.0.1:6555")
+    asyncio.run(telegram_mine.start_FrogFarm())

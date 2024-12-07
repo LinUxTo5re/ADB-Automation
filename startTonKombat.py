@@ -12,7 +12,7 @@ class StartTonKombat:
             os.system(f"adb -s {self.device_id} shell input swipe 700 640 100 640 300") # swipe towards right
             time.sleep(3)
             os.system(f"adb -s {self.device_id} shell input tap 475 175")  # TON shortcut on homescreen
-            time.sleep(15)
+            time.sleep(20)
         else:
             print("Stopping Telegram...")
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
@@ -52,14 +52,14 @@ class StartTonKombat:
 
     async def start_TON(self):
         self.handle_app_behavior(False)
-        is_fight_required = True
-        count = 1
+        is_fight_required = False
+        count = 0
         while True:
             print("\nStarting TON .....")
 
             try:
-                if count % 2 == 0:
-                    is_fight_required = False
+                if count % 4 == 0:
+                    is_fight_required = True
 
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (TON).......")
@@ -76,6 +76,6 @@ class StartTonKombat:
                 await asyncio.sleep(total_seconds)
                 count = count + 1
 
-if __name__ == "__main__":
-    telegram_mine = StartTonKombat("127.0.0.1:6555")
-    asyncio.run(telegram_mine.start_TON())
+# if __name__ == "__main__":
+#     telegram_mine = StartTonKombat("127.0.0.1:6555")
+#     asyncio.run(telegram_mine.start_TON())
