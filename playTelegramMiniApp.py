@@ -1,6 +1,6 @@
 import asyncio
 import os
-from startWcoin import UpdatedMineWcoinProgram
+from startWcoin import startWcoin
 from startMMMFarming import StartMMMFarming
 from startBLUMFarming import StartBLUMFarming
 from startTronKeeper import StartTronKeeper
@@ -47,8 +47,12 @@ class StartMiningMemeCoinsOnTelegram:
             self.start_blum_coin()
         )
 
+    async def start_tonxdao_coin(self):
+        tonxdaocoin = StartTONxDAO(self.device_id)
+        await tonxdaocoin.start_TONxDAO()  # 180 min await in main()
+        
     async def start_w_coin(self):
-        wcoin = UpdatedMineWcoinProgram(self.device_id)
+        wcoin = startWcoin(self.device_id)
         await wcoin.start_Wcoin() # 15 min await in main()
 
     async def start_hipo_coin(self):
@@ -114,10 +118,6 @@ class StartMiningMemeCoinsOnTelegram:
     async def start_iceberg_coin(self):
         icebergcoin = StartIceBerg(self.device_id)
         await icebergcoin.start_IceBerg()  # 180 min await in main()
-
-    async def start_tonxdao_coin(self):
-        tonxdaocoin = StartTONxDAO(self.device_id)
-        await tonxdaocoin.start_TONxDAO()  # 180 min await in main()
 
 if __name__ == "__main__":
     telegram_mine = StartMiningMemeCoinsOnTelegram()

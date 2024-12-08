@@ -20,7 +20,7 @@ class StartCGX:
             os.system(f"adb -s {self.device_id} shell input swipe 100 640 700 640 300") #swipe towards left
             time.sleep(5)
 
-    def tap_farming(self):
+    def tap_farming(self, is_daily_task):
         os.system(f'''adb -s {self.device_id} shell input tap 375 1130''')  # for safety - home btn
         time.sleep(3)
 
@@ -28,25 +28,27 @@ class StartCGX:
         time.sleep(3)
 
         sequence = " ".join(str(i) for i in range(1, 3))        
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 975; sleep 5; done"''')  # Claiming btn position
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 975; sleep 10; done"''')  # Claiming btn position
         time.sleep(5)
+        
+        if is_daily_task:
+            os.system(f'''adb -s {self.device_id} shell input tap 100 255''')  # Daily Bonus btn
+            time.sleep(5)
 
-        os.system(f'''adb -s {self.device_id} shell input tap 100 255''')  # Daily Bonus btn
-        time.sleep(5)
-
-        os.system(f'''adb -s {self.device_id} shell input tap 675 670''')  # claim daily bonus
-        time.sleep(5)
+            os.system(f'''adb -s {self.device_id} shell input tap 675 670''')  # claim daily bonus
+            time.sleep(5)
 
     async def start_CGX(self):
         self.handle_app_behavior(False)
-
+        count, is_daily_task = 0, False
         while True:
             print("\nStarting CGX .....")
 
             try: 
+                is_daily_task = count % 24 == 0
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (CGX).......")
-                self.tap_farming()
+                self.tap_farming(is_daily_task)
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
                 total_seconds = 2700 # 45 minutes in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
@@ -56,6 +58,7 @@ class StartCGX:
                 print(f'Error: {e}')
                 print("Whatever it is, let's start again\n")
             finally:
+                count = count + 1
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

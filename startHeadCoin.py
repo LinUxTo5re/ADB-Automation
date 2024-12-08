@@ -16,7 +16,7 @@ class StartHeadCoin:
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
-    def tap_farming(self):      
+    def tap_farming(self, is_daily_task):      
             os.system(f"adb -s {self.device_id} shell input tap 400 1030")  # Claim coins
             print("Claimed Head coins....")
             time.sleep(5)
@@ -29,29 +29,31 @@ class StartHeadCoin:
             print("Claimed NFT key")
 
             sequence = " ".join(str(i) for i in range(1, 500))
-            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 400; sleep 0.3; done"''') # Farming button position
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 400; sleep 0.3; done"''') # Farming button position (diamond)
             time.sleep(5)
             print("Claimed Diamond.....")
 
-            os.system(f"adb -s {self.device_id} shell input tap 400 1130")  # Earn btn position
-            time.sleep(3)
-            os.system(f"adb -s {self.device_id} shell input tap 350 470")  # Daily reward btn position
-            time.sleep(3)
-            os.system(f"adb -s {self.device_id} shell input tap 400 1100")  # Claim daily reward
-            print('Claimed Daily reward')
+            if is_daily_task:
+                os.system(f"adb -s {self.device_id} shell input tap 400 1130")  # Earn btn position
+                time.sleep(3)
+                os.system(f"adb -s {self.device_id} shell input tap 350 470")  # Daily reward btn position
+                time.sleep(3)
+                os.system(f"adb -s {self.device_id} shell input tap 400 1100")  # Claim daily reward
+                print('Claimed Daily reward')
 
     async def start_Head(self):
         self.handle_app_behavior(False)
-
+        count, is_daily_task = 0 , False
         while True:
             print("\nStarting Head .....")
+            is_daily_task = count % 6 == 0 # check after 24 hours
 
             try: 
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (Head).......")
-                self.tap_farming()
+                self.tap_farming(is_daily_task)
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 7200 # 2 hours
+                total_seconds = 14400 # 4 hours
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (Head) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                 self.handle_app_behavior(False)
@@ -59,6 +61,7 @@ class StartHeadCoin:
                 print(f'Error: {e}')
                 print("Whatever it is, let's start again\n")
             finally:
+                count = count + 1
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

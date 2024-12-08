@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+import random
 
 class StartHipoGangFarming:
     def __init__(self, device_id):
@@ -18,7 +19,9 @@ class StartHipoGangFarming:
 
     def tap_farming(self):      
         sequence = " ".join(str(i) for i in range(1, 550))
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 800; sleep 0.1; done"''') # Farming button position
+        random_x = random.randint(100, 650)
+        random_y = random.randint(600, 1000)
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {random_x} {random_y}; sleep 0.1; done"''') # Farming button position
         time.sleep(5)
 
         # os.system(f'''adb -s {self.device_id} shell input tap 350 300''') # click on daily reward btn
@@ -37,7 +40,7 @@ class StartHipoGangFarming:
                 print("Claiming or Farming (HipoGang).......")
                 self.tap_farming()
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 960 # 16 minutes in seconds
+                total_seconds = 1200 # 20 minutes in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (HipoGang) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                 self.handle_app_behavior(False)

@@ -20,30 +20,33 @@ class StartTONxDAO:
             os.system(f"adb -s {self.device_id} shell input swipe 100 640 700 640 300") #swipe towards left
             time.sleep(5)
 
-    def tap_farming(self):
+    def tap_farming(self, is_daily_task):
         print('Holding (touch) for next 01 minute.....')
         os.system(f"adb -s {self.device_id} shell input swipe 400 700 400 700 60000") # hold for 01 minutes
         time.sleep(5)
         os.system(f"adb -s {self.device_id} shell input tap 675 1150") # Click on tasks
         time.sleep(3)
-        print("Claiming daily task......")
-        sequence = " ".join(str(i) for i in range(1, 3))
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 250 530; sleep 5; done"''')  # Click on emoji task
-        time.sleep(5)
+        
+        if is_daily_task:
+            print("Claiming daily task......")
+            sequence = " ".join(str(i) for i in range(1, 3))
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 630; sleep 5; done"''')  # Click on emoji task
+            time.sleep(5)
 
     async def start_TONxDAO(self):
         self.handle_app_behavior(False)
-
+        count, is_daily_task = 0, False
         while True:
             print("\nStarting TONxDAO .....")
 
             try: 
+                is_daily_task = count % 24 == 0
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (TONxDAO).......")
-                self.tap_farming()
+                self.tap_farming(is_daily_task)
 
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 10800 # 180 minutes in seconds (3 hours)
+                total_seconds = 14400 # 4 hours in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (TONxDAO) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                 self.handle_app_behavior(False)
@@ -51,6 +54,7 @@ class StartTONxDAO:
                 print(f'Error: {e}')
                 print("Whatever it is, let's start again\n")
             finally:
+                count = count + 1
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

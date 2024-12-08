@@ -26,7 +26,7 @@ class StartSeedFarming:
             print("Seeding completed, processing worm ...")
         else: 
             os.system(f"adb -s {self.device_id} shell input tap {tap_x} {tap_y}")  # Farming worm button position
-            os.system(f"adb -s {self.device_id} shell input tap 285 730")  # Christmas gift --> remove later
+            os.system(f"adb -s {self.device_id} shell input tap 250 750")  # Christmas gift --> remove later
 
         time.sleep(2)
         os.system(f"adb -s {self.device_id} shell input tap 400 125")  # closing pop-up (optional)

@@ -2,7 +2,7 @@ import os
 import time
 import asyncio
 
-class UpdatedMineWcoinProgram:
+class startWcoin:
     def __init__(self, device_id):
         self.device_id = device_id
         self.sleep_val = 900
@@ -13,11 +13,12 @@ class UpdatedMineWcoinProgram:
         print("Finished all taps.")
 
         if is_WAI:
+            time.sleep(5)
             os.system(f"adb -s {self.device_id} shell input tap 520 415")  # Tap on the W-AI
             time.sleep(10)
 
             sequence = " ".join(str(i) for i in range(1, 4))
-            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1100; sleep 0.5; done;"''')  # Claim W-AI
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1100; sleep 2; done;"''')  # Claim W-AI
             time.sleep(2)
 
     def handle_app_behavior(self, is_start):
@@ -38,8 +39,7 @@ class UpdatedMineWcoinProgram:
         self.handle_app_behavior(False)
         while True:
             try:
-                if count % 45 == 0: # Do check W-AI after every 3 hours or 45 counts
-                    is_WAI = True
+                is_WAI = count % 45 == 0 # Do check W-AI after every 3 hours or 45 counts
 
                 print("\nStarting mining W-coin...")
                 self.handle_app_behavior(True)
@@ -50,8 +50,9 @@ class UpdatedMineWcoinProgram:
             except Exception as e:
                 print(f"Exception: {e}")
             finally:
+                count = count + 1
                 await asyncio.sleep(self.sleep_val)
 
 # if __name__ == "__main__":
-#     telegram_mine = UpdatedMineWcoinProgram("127.0.0.1:6555")
+#     telegram_mine = startWcoin("127.0.0.1:6555")
 #     asyncio.run(telegram_mine.start_Wcoin())

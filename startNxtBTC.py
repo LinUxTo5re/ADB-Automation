@@ -20,7 +20,7 @@ class StartNxtBTC:
             os.system(f"adb -s {self.device_id} shell input swipe 100 640 700 640 300") #swipe towards left
             time.sleep(5)
 
-    def tap_farming(self):
+    def tap_farming(self, is_daily_task):
         os.system(f'''adb -s {self.device_id} shell input tap 300 1100''')  #Mine btn position
         time.sleep(3)
 
@@ -33,25 +33,27 @@ class StartNxtBTC:
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 250 885; sleep 5; done"''')  # Mining btn position
         time.sleep(5)
 
-        os.system(f'''adb -s {self.device_id} shell input tap 100 1100''')  # Home btn position
-        time.sleep(2)
-        os.system(f'''adb -s {self.device_id} shell input tap 100 975''')  # Daily bonus position
-        time.sleep(5)
-        os.system(f'''adb -s {self.device_id} shell input tap 400 850''')  # claim position
-        time.sleep(5)
+        if is_daily_task:
+            os.system(f'''adb -s {self.device_id} shell input tap 100 1100''')  # Home btn position
+            time.sleep(2)
+            os.system(f'''adb -s {self.device_id} shell input tap 100 975''')  # Daily bonus position
+            time.sleep(5)
+            os.system(f'''adb -s {self.device_id} shell input tap 400 850''')  # claim position
+            time.sleep(5)
 
     async def start_NxtBTC(self):
         self.handle_app_behavior(False)
-
+        count, is_daily_task = 0, False
         while True:
             print("\nStarting NxtBTC .....")
 
             try: 
+                is_daily_task = count % 24 == 0 
                 self.handle_app_behavior(True)
                 print("Claiming or Farming (NxtBTC).......")
-                self.tap_farming()
+                self.tap_farming(is_daily_task)
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 2700 # 45 minutes in seconds
+                total_seconds = 3600 # 60 minutes in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (NxtBTC) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                 self.handle_app_behavior(False)
@@ -59,6 +61,7 @@ class StartNxtBTC:
                 print(f'Error: {e}')
                 print("Whatever it is, let's start again\n")
             finally:
+                count = count + 1
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

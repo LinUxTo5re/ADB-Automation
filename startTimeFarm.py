@@ -32,7 +32,7 @@ class StartTimeFarmFarming:
                 print("Claiming or Farming (TimeFarm).......")
                 self.tap_farming()
                 print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 3600 # 60 minutes in seconds
+                total_seconds = 7200 # 2 hours in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (TimeFarm) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                 self.handle_app_behavior(False)
