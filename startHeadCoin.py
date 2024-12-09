@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class StartHeadCoin:
     def __init__(self, device_id):
@@ -49,18 +50,22 @@ class StartHeadCoin:
             is_daily_task = count % 6 == 0 # check after 24 hours
 
             try: 
-                self.handle_app_behavior(True)
-                print("Claiming or Farming (Head).......")
-                self.tap_farming(is_daily_task)
-                print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 14400 # 4 hours
-                wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
-                print(f'Farming (Head) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
-                self.handle_app_behavior(False)
+                if is_emulator_working():
+                    self.handle_app_behavior(True)
+                    print("Claiming or Farming (Head).......")
+                    self.tap_farming(is_daily_task)
+                    print("Successfully Claimed or Farmed, Ready to exit for now......")
+                    total_seconds = 14400 # 4 hours
+                    wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
+                    print(f'Farming (Head) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
                 print(f'Error: {e}')
-                print("Whatever it is, let's start again\n")
-            finally:
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 count = count + 1
                 await asyncio.sleep(total_seconds)
 

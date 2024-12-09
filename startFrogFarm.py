@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class StartFrogFarmFarming:
     def __init__(self, device_id):
@@ -16,16 +17,19 @@ class StartFrogFarmFarming:
             os.system(f"adb -s {self.device_id} shell am force-stop org.telegram.messenger.web")
             time.sleep(5)
 
-    def tap_farming(self, tap_x, tap_y, is_daily_task):
+    def tap_farming(self,is_daily_task):
+        sequence = " ".join(str(i) for i in range(1, 4))
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 350 975; sleep 5; done"''') # Farming/daily reward button position
+        time.sleep(5)
+
         if is_daily_task:
+            print("Farming completed, now claiming daily reward...")
             os.system(f"adb -s {self.device_id} shell input tap 500 1130") # click on tasks
             time.sleep(3)
             os.system(f"adb -s {self.device_id} shell input tap 400 375") # click on daily reward
             time.sleep(3)
-
-        sequence = " ".join(str(i) for i in range(1, 3))
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {tap_x} {tap_y}; sleep 5; done"''') # Farming/daily reward button position
-        time.sleep(5)
+            os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1100; sleep 5; done"''') # Farming/daily reward button position
+            time.sleep(5)
 
     async def start_FrogFarm(self):
         self.handle_app_behavior(False)
@@ -34,32 +38,28 @@ class StartFrogFarmFarming:
             print("\nStarting FrogFarm .....")
 
             try: 
-                self.handle_app_behavior(True)
-                is_daily_task = count % 48 == 0 # farming completes in 30 minutes and daily task in once in a day (24 hr=> 1440 min/30 min = 48 rounds)
+                if is_emulator_working():
+                    self.handle_app_behavior(True)
+                    is_daily_task = count % 48 == 0 # farming completes in 30 minutes and daily task in once in a day (24 hr=> 1440 min/30 min = 48 rounds)
 
-                print("Claiming or Farming (FrogFarm).......")
-                tap_x = tap_y = 0
-                for _ in range(2): # 2 times for farming and claiming daily task
-                    tap_x, tap_y = 350, 1000 # Farming btn position
-                    
-                    if is_daily_task:
-                        print("Farming completed, now claiming daily reward...")
-                        tap_x, tap_y = 400, 1100 # Daily task
+                    print("Claiming or Farming (FrogFarm).......")
+                    self.tap_farming(is_daily_task)
 
-                    self.tap_farming(tap_x, tap_y, is_daily_task)
-
-                print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 900 # 15 minutes in seconds
-                wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
-                print(f'Farming (FrogFarm) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
-                self.handle_app_behavior(False)
+                    print("Successfully Claimed or Farmed, Ready to exit for now......")
+                    total_seconds = 900 # 15 minutes in seconds
+                    wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
+                    print(f'Farming (FrogFarm) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
                 print(f'Error: {e}')
-                print("Whatever it is, let's start again\n")
-            finally:
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 count = count + 1
                 await asyncio.sleep(total_seconds)
 
-if __name__ == "__main__":
-    telegram_mine = StartFrogFarmFarming("127.0.0.1:6555")
-    asyncio.run(telegram_mine.start_FrogFarm())
+# if __name__ == "__main__":
+#     telegram_mine = StartFrogFarmFarming("127.0.0.1:6555")
+#     asyncio.run(telegram_mine.start_FrogFarm())

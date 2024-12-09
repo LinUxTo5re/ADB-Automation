@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class StartMMMFarming:
     def __init__(self, device_id):
@@ -37,18 +38,21 @@ class StartMMMFarming:
             is_daily_reward = count % 3 == 0
 
             try:
-                self.handle_app_behavior(True)
-                print("Claiming or Farming (Mr. MEME).......")
-                self.tap_farming(is_daily_reward)                    
-                total_seconds = 7200 # 2 hours in seconds
-                wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
-                print(f'Farming (Mr. MEME) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
-                self.handle_app_behavior(False)
-
+                if is_emulator_working():
+                    self.handle_app_behavior(True)
+                    print("Claiming or Farming (Mr. MEME).......")
+                    self.tap_farming(is_daily_reward)                    
+                    total_seconds = 7200 # 2 hours in seconds
+                    wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
+                    print(f'Farming (Mr. MEME) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
                 print(f'Error: {e}')
-                print("Whatever it is, let's start again\n")
-            finally:
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 count = count + 1
                 await asyncio.sleep(total_seconds)
 

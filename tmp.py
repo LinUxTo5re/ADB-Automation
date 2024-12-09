@@ -1,4 +1,3 @@
-import os
+from checkADB import is_emulator_working
 
-while True:    
-    os.system(f'''adb -s 127.0.0.1:6555 shell input tap 400 700''') # Farming button position
+print(is_emulator_working())

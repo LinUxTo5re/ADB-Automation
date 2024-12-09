@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class startWcoin:
     def __init__(self, device_id):
@@ -39,17 +40,21 @@ class startWcoin:
         self.handle_app_behavior(False)
         while True:
             try:
-                is_WAI = count % 45 == 0 # Do check W-AI after every 3 hours or 45 counts
-
-                print("\nStarting mining W-coin...")
-                self.handle_app_behavior(True)
-                self.tap_center(is_WAI)                
-                sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + self.sleep_val))
-                print(f"sleeping for {self.sleep_val} seconds (until {sleep_time}).")
-                self.handle_app_behavior(False)
+                if is_emulator_working():
+                    is_WAI = count % 45 == 0 # Do check W-AI after every 3 hours or 45 counts
+                    print("\nStarting mining W-coin...")
+                    self.handle_app_behavior(True)
+                    self.tap_center(is_WAI)                
+                    sleep_time = time.strftime("%H:%M:%S", time.localtime(time.time() + self.sleep_val))
+                    print(f"sleeping for {self.sleep_val} seconds (until {sleep_time}).")
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
-                print(f"Exception: {e}")
-            finally:
+                print(f'Error: {e}')
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 count = count + 1
                 await asyncio.sleep(self.sleep_val)
 

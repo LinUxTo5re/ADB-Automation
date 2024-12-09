@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class StartSwitchClaiming:
     def __init__(self, device_id):
@@ -40,19 +41,23 @@ class StartSwitchClaiming:
             print("\nStarting Switch .....")
 
             try: 
-                self.handle_app_behavior(True)
-                is_daily_task = count % 8 == 0
-                print("Claiming or Farming (Switch).......")
-                self.tap_farming(is_daily_task)
-                print("Successfully Claimed or Farmed, Ready to exit for now......")
-                total_seconds = 10800 # 3 hours in seconds
-                wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
-                print(f'Farming (Switch) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
-                self.handle_app_behavior(False)
+                if is_emulator_working():
+                    self.handle_app_behavior(True)
+                    is_daily_task = count % 8 == 0
+                    print("Claiming or Farming (Switch).......")
+                    self.tap_farming(is_daily_task)
+                    print("Successfully Claimed or Farmed, Ready to exit for now......")
+                    total_seconds = 10800 # 3 hours in seconds
+                    wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
+                    print(f'Farming (Switch) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
                 print(f'Error: {e}')
-                print("Whatever it is, let's start again\n")
-            finally:
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 count = count + 1
                 await asyncio.sleep(total_seconds)
 

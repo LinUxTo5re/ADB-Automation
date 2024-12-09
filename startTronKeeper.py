@@ -1,6 +1,7 @@
 import os
 import time
 import asyncio
+from checkADB import is_emulator_working
 
 class StartTronKeeper:
     def __init__(self, device_id):
@@ -35,26 +36,29 @@ class StartTronKeeper:
             print("\nstarting TronKeeper .....")
 
             try:
-                self.handle_app_behavior(True)
-                print("Claiming or Farming (TronKeeper).......")
-                tap_x = tap_y = 0
-                for i in range(2): # usdt and earn open league coins
-                    if i == 0:
-                        tap_x, tap_y = 400, 700
-                    else: 
-                        print('earned usdt, now earning open league coins')
-                        tap_x, tap_y = 400, 750
-                    self.tap_farming(tap_x, tap_y)   
+                if is_emulator_working():
+                    self.handle_app_behavior(True)
+                    print("Claiming or Farming (TronKeeper).......")
+                    tap_x = tap_y = 0
+                    for i in range(2): # usdt and earn open league coins
+                        if i == 0:
+                            tap_x, tap_y = 400, 700
+                        else: 
+                            print('earned usdt, now earning open league coins')
+                            tap_x, tap_y = 400, 750
+                        self.tap_farming(tap_x, tap_y)   
 
-                total_seconds = 86400 # 24 hours
-                wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
-                print(f'Farming is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
-                self.handle_app_behavior(False)
-
+                    total_seconds = 86400 # 24 hours
+                    wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
+                    print(f'Farming is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
+                    self.handle_app_behavior(False)
+                else:
+                    raise ValueError("ADB NOT FOUND.....")
             except Exception as e:
                 print(f'Error: {e}')
-                print("Whatever it is, let's start again\n")
-            finally:
+                print("Whatever it is, let's start after 2 minutes......\n")
+                time.sleep(120)
+            else:
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":
