@@ -1,7 +1,6 @@
 import asyncio
 import os
 from startWcoin import startWcoin
-from startMMMFarming import StartMMMFarming
 from startBLUMFarming import StartBLUMFarming
 from startTronKeeper import StartTronKeeper
 from startSeedFarming import StartSeedFarming
@@ -36,7 +35,6 @@ class StartMiningMemeCoinsOnTelegram:
             self.start_angryminer_coin(),
             self.start_nordomg_coin(),
             self.start_spell_coin(),
-            self.start_mmm_coin(),
             self.start_seed_coin(),
             self.start_time_coin(),
             self.start_tron_coin(),
