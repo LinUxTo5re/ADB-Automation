@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartSeedFarming:
     def __init__(self, device_id):
@@ -75,6 +76,7 @@ class StartSeedFarming:
                 print("Whatever it is, let's start after 2 minutes......\n")
                 time.sleep(120)
             else:
+                clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

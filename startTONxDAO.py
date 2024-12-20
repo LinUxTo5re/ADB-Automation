@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartTONxDAO:
     def __init__(self, device_id):
@@ -42,7 +43,7 @@ class StartTONxDAO:
 
             try: 
                 if is_emulator_working():
-                    is_daily_task = count % 24 == 0
+                    is_daily_task = count % 12 == 0
                     self.handle_app_behavior(True)
                     print("Claiming or Farming (TONxDAO).......")
                     self.tap_farming(is_daily_task)
@@ -60,8 +61,9 @@ class StartTONxDAO:
                 time.sleep(120)
             else:
                 count = count + 1
+                if count % 4 == 0:
+                    clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
-
 # if __name__ == "__main__":
 #     telegram_mine = StartTONxDAO("127.0.0.1:6555")
 #     asyncio.run(telegram_mine.start_TONxDAO())

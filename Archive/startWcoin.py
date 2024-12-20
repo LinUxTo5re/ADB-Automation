@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class startWcoin:
     def __init__(self, device_id):
@@ -15,7 +16,7 @@ class startWcoin:
 
         if is_WAI:
             time.sleep(5)
-            os.system(f"adb -s {self.device_id} shell input tap 520 415")  # Tap on the W-AI
+            os.system(f"adb -s {self.device_id} shell input tap 475 1115")  # Tap on the W-AI
             time.sleep(10)
 
             sequence = " ".join(str(i) for i in range(1, 4))
@@ -56,6 +57,8 @@ class startWcoin:
                 time.sleep(120)
             else:
                 count = count + 1
+                if count % 5 == 0:
+                    clear_all_recent_apps()
                 await asyncio.sleep(self.sleep_val)
 
 # if __name__ == "__main__":

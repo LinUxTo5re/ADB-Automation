@@ -3,6 +3,7 @@ import time
 import asyncio
 import random
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartNordomGates:
     def __init__(self, device_id):
@@ -29,7 +30,7 @@ class StartNordomGates:
             print('Playing Knock-Knock.....')
             os.system(f"adb -s {self.device_id} shell input tap 400 1000") # Knock Knock, Who's There?
             time.sleep(2)
-            sequence = " ".join(str(i) for i in range(1, 350))
+            sequence = " ".join(str(i) for i in range(1, 400))
             os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 425 700; done"''')  # Knock on the door
         
         loc_pick = [200, 400, 600]
@@ -70,6 +71,8 @@ class StartNordomGates:
                 time.sleep(120)
             else:
                 count = count + 1
+                if is_Knock_Knock:
+                    clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

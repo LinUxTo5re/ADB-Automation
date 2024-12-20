@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartSpellBoosting:
     def __init__(self, device_id):
@@ -55,8 +56,8 @@ class StartSpellBoosting:
                 print("Whatever it is, let's start after 2 minutes......\n")
                 time.sleep(120)
             else:
+                clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
-
 # if __name__ == "__main__":
 #     telegram_mine = StartSpellBoosting("127.0.0.1:6555")
 #     asyncio.run(telegram_mine.start_Spell())

@@ -33,8 +33,8 @@ class StartHeadCoin:
             os.system(f"adb -s {self.device_id} shell input swipe 384 1000 384 640 500") # scroll down to claim key
             time.sleep(3)
             os.system(f"adb -s {self.device_id} shell input tap 550 800")  # Claim key
-            time.sleep(3)
             print("Claimed NFT key")
+            time.sleep(3)
 
             sequence = " ".join(str(i) for i in range(1, 500))
             os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 400; sleep 0.3; done"''') # Farming button position (diamond)
@@ -48,6 +48,7 @@ class StartHeadCoin:
                 time.sleep(3)
                 os.system(f"adb -s {self.device_id} shell input tap 400 1100")  # Claim daily reward
                 print('Claimed Daily reward')
+            time.sleep(5)
 
     async def start_Head(self):
         self.handle_app_behavior(False)

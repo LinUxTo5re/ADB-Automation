@@ -48,7 +48,7 @@ class StartTronKeeper:
                             tap_x, tap_y = 400, 750
                         self.tap_farming(tap_x, tap_y)   
 
-                    total_seconds = 86400 # 24 hours
+                    total_seconds = 43200 # 12 hours
                     wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                     print(f'Farming is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                     self.handle_app_behavior(False)

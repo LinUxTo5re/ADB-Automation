@@ -52,7 +52,7 @@ class StartSwitchClaiming:
                     if is_emulator_working():
                         x_tap, y_tap = (480, 900) if _ == 0 else (475, 650)
                         self.handle_app_behavior(True, x_tap, y_tap, _)
-                        is_daily_task = count % 8 == 0
+                        is_daily_task = count % 4 == 0
                         print("Claiming or Farming (Switch).......")
                         self.tap_farming(is_daily_task)
                         print(f"Successfully Claimed or Farmed, Ready to exit for now for device: {_ + 1}......")

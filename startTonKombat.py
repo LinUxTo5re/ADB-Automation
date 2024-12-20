@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartTonKombat:
     def __init__(self, device_id):
@@ -30,9 +31,9 @@ class StartTonKombat:
 
         if is_fight_required:
             print("Playing fights..... wait for 5 fights (max. 5 min)")
-            os.system(f'''adb -s {self.device_id} shell input tap 400 1115''')  # Kombat btn position
+            os.system(f'''adb -s {self.device_id} shell input tap 600 300''')  # Kombat btn position
             time.sleep(3)
-            os.system(f'''adb -s {self.device_id} shell input tap 500 950''')  # Fight btn position
+            os.system(f'''adb -s {self.device_id} shell input tap 600 1000''')  # Fight btn position
 
             for _ in range(5):
                 time.sleep(45) # wating to fight get complete
@@ -45,14 +46,14 @@ class StartTonKombat:
                 os.system(f'''adb -s {self.device_id} shell input tap 500 1130''')  # Play again btn position
         
         if is_daily_task:
-            os.system(f'''adb -s {self.device_id} shell input tap 100 1115''')  # Menu button position
+            os.system(f'''adb -s {self.device_id} shell input tap 230 1115''')  # Menu button position
             time.sleep(3)
 
             os.system(f'''adb -s {self.device_id} shell input tap 350 350''')  # Earn button position
             time.sleep(3)
 
             os.system(f'''adb -s {self.device_id} shell input tap 350 1100''')  # Daily bonus button position
-            time.sleep(3)
+        time.sleep(3)
 
     async def start_TON(self):
         self.handle_app_behavior(False)
@@ -83,8 +84,10 @@ class StartTonKombat:
                 time.sleep(120)
             else:
                 count = count + 1
+                if is_fight_required:
+                    clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
 
-# if __name__ == "__main__":
-#     telegram_mine = StartTonKombat("127.0.0.1:6555")
-#     asyncio.run(telegram_mine.start_TON())
+if __name__ == "__main__":
+    telegram_mine = StartTonKombat("127.0.0.1:6555")
+    asyncio.run(telegram_mine.start_TON())

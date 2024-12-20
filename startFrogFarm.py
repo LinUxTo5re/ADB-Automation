@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartFrogFarmFarming:
     def __init__(self, device_id):
@@ -68,6 +69,8 @@ class StartFrogFarmFarming:
                 time.sleep(120)
             else:
                 count = count + 1
+                if count % 12 == 0:
+                    clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":

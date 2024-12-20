@@ -1,6 +1,5 @@
 import asyncio
 import os
-from startWcoin import startWcoin
 from startBLUMFarming import StartBLUMFarming
 from startTronKeeper import StartTronKeeper
 from startSeedFarming import StartSeedFarming
@@ -27,7 +26,6 @@ class StartMiningMemeCoinsOnTelegram:
         # Run mining tasks concurrently
         await asyncio.gather(
             self.start_tonxdao_coin(),
-            self.start_w_coin(),
             self.start_hipo_coin(),
             self.start_iceberg_coin(),
             self.start_switch_coin(),
@@ -49,17 +47,9 @@ class StartMiningMemeCoinsOnTelegram:
         tonxdaocoin = StartTONxDAO(self.device_id)
         await tonxdaocoin.start_TONxDAO()  # 240 min await in main()
 
-    async def start_w_coin(self):
-        wcoin = startWcoin(self.device_id)
-        await wcoin.start_Wcoin() # 15 min await in main()
-
     async def start_hipo_coin(self):
         hipocoin = StartHipoGangFarming(self.device_id)
         await hipocoin.start_HipoGang() # 20 min await in main()
-
-    async def start_mmm_coin(self):
-        mmmcoin = StartMMMFarming(self.device_id)
-        await mmmcoin.start_MMM() # 60 min await in main()
     
     async def start_blum_coin(self):
         blumcoin = StartBLUMFarming(self.device_id)
@@ -83,7 +73,7 @@ class StartMiningMemeCoinsOnTelegram:
 
     async def start_tron_coin(self):
         troncoin = StartTronKeeper(self.device_id)
-        await troncoin.start_Tron()  # 1440 min await in main()
+        await troncoin.start_Tron()  # 720 min await in main()
     
     async def start_time_coin(self):
         secondcoin = StartTimeFarmFarming(self.device_id)
@@ -120,10 +110,3 @@ class StartMiningMemeCoinsOnTelegram:
 if __name__ == "__main__":
     telegram_mine = StartMiningMemeCoinsOnTelegram()
     asyncio.run(telegram_mine.start_all())
-
-"""
-Order of starting bot:
-1) blum
-2) mmm
-3) w coin
-"""

@@ -2,6 +2,7 @@ import os
 import time
 import asyncio
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartCGX:
     def __init__(self, device_id):
@@ -52,13 +53,14 @@ class StartCGX:
         self.handle_app_behavior(False)
         count, is_daily_task = 0, False
         while True:
+            clear_all_recent_apps()
             print("\nStarting CGX .....")
 
             try: 
                 for _ in range(2): # for 2 diff devices
                     if is_emulator_working:
                         x_tap, y_tap = (475, 400) if _ == 0 else (115, 650)
-                        is_daily_task = count % 24 == 0
+                        is_daily_task = count % 6 == 0
                         self.handle_app_behavior(True, x_tap, y_tap)
                         print("Claiming or Farming (CGX).......")
                         self.tap_farming(is_daily_task)
@@ -66,7 +68,7 @@ class StartCGX:
                         self.handle_app_behavior(False)
                     else:
                         raise ValueError("ADB NOT FOUND.....")
-                total_seconds = 2700 # 45 minutes in seconds
+                total_seconds = 1500 # 25 minutes in seconds
                 wake_up_time = time.strftime("%H:%M:%S", time.localtime(time.time() + total_seconds))
                 print(f'Farming (CGX) is in progress, Need to wait for {total_seconds} seconds (until {wake_up_time})....')
                         

@@ -25,6 +25,8 @@ class StartBLUMFarming:
             time.sleep(5)
 
     def tap_farming(self):
+        os.system(f"adb -s {self.device_id} shell input tap 650 600")  # Daily claim btn
+        time.sleep(5)
         os.system(f"adb -s {self.device_id} shell input tap 100 1140")  # Home menu btn 
         time.sleep(2)
         sequence = " ".join(str(i) for i in range(1, 6))
@@ -44,7 +46,7 @@ class StartBLUMFarming:
                         self.handle_app_behavior(True, x_tap, y_tap, _)
                         print("Claiming or Farming (BLUM).......")
                         self.tap_farming()
-                        print("Successfully Claimed or Farmed, Ready to exit for now for device: {_ + 1}......")
+                        print(f"Successfully Claimed or Farmed, Ready to exit for now for device: {_ + 1}......")
                         self.handle_app_behavior(False)
                     else:
                         raise ValueError("ADB NOT FOUND.....")

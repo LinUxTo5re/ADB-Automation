@@ -3,6 +3,7 @@ import time
 import asyncio
 import random
 from checkADB import is_emulator_working
+from closeAllRecentApps import clear_all_recent_apps
 
 class StartHipoGangFarming:
     def __init__(self, device_id):
@@ -20,19 +21,14 @@ class StartHipoGangFarming:
 
     def tap_farming(self):      
         sequence = " ".join(str(i) for i in range(1, 550))
-        random_x = random.randint(100, 650)
-        random_y = random.randint(600, 1000)
-        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {random_x} {random_y}; sleep 0.1; done"''') # Farming button position
+        random_x = random.randint(275, 650)
+        random_y = random.randint(600, 950)
+        os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap {random_x} {random_y}; sleep 0.15; done"''') # Farming button position
         time.sleep(5)
-
-        # os.system(f'''adb -s {self.device_id} shell input tap 350 300''') # click on daily reward btn
-        # time.sleep(5)
-        # os.system(f'''adb -s {self.device_id} shell input tap 400 1100''') # claim daily reward
-        # time.sleep(5)
 
     async def start_HipoGang(self):
         self.handle_app_behavior(False)
-
+        count = 0
         while True:
             print("\nStarting HipoGang .....")
 
@@ -53,6 +49,9 @@ class StartHipoGangFarming:
                 print("Whatever it is, let's start after 2 minutes......\n")
                 time.sleep(120)
             else:
+                count = count + 1
+                if count % 10 == 0:
+                    clear_all_recent_apps()
                 await asyncio.sleep(total_seconds)
 
 # if __name__ == "__main__":
