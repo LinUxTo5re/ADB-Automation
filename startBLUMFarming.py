@@ -25,10 +25,11 @@ class StartBLUMFarming:
             time.sleep(5)
 
     def tap_farming(self):
-        os.system(f"adb -s {self.device_id} shell input tap 650 600")  # Daily claim btn
-        time.sleep(5)
+        time.sleep(2)
         os.system(f"adb -s {self.device_id} shell input tap 100 1140")  # Home menu btn 
         time.sleep(2)
+        os.system(f"adb -s {self.device_id} shell input tap 650 600")  # Daily claim btn
+        time.sleep(5)
         sequence = " ".join(str(i) for i in range(1, 6))
         os.system(f'''adb -s {self.device_id} shell "for i in {sequence}; do input tap 400 1000; sleep 5; done"''') # Farming button position
         time.sleep(5)
